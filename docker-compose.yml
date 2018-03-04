@@ -21,6 +21,17 @@ services:
       MYSQL_USER: root
       MYSQL_PASSWORD: root
 
+  php:
+      build:
+        context: ./
+        dockerfile: /docker/php/Dockerfile
+      depends_on:
+        - mysql
+      expose:
+        - 9000
+      volumes:
+        - ./www:/var/www/html
+
   nginx:
     build:
       context: ./
@@ -29,17 +40,8 @@ services:
       - 9000:80
     volumes:
       - ./www:/var/www/html
-
-  php:
-    build:
-      context: ./
-      dockerfile: /docker/php/Dockerfile
     depends_on:
-      - mysql
-    expose:
-      - 9000
-    volumes:
-      - ./www:/var/www/html
+      - php
 
     environment:
       MYSQL_ROOT_PASSWORD: root
