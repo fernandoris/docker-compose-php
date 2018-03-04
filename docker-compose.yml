@@ -1,0 +1,72 @@
+version: '3'
+
+volumes:
+    database_data:
+        driver: local
+
+services:
+
+  mysql:
+    image: mysql:latest
+    build:
+      context: ./
+      dockerfile: /docker/mysql/Dockerfile
+    expose:
+      - 3306
+    volumes:
+      - database_data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: database
+      MYSQL_USER: root
+      MYSQL_PASSWORD: root
+
+  nginx:
+    build:
+      context: ./
+      dockerfile: /docker/nginx/Dockerfile
+    ports:
+      - 9000:80
+    volumes:
+      - ./www:/var/www/html
+
+  php:
+    build:
+      context: ./
+      dockerfile: /docker/php/Dockerfile
+    depends_on:
+      - mysql
+    expose:
+      - 9000
+    volumes:
+      - ./www:/var/www/html
+
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: database
+      MYSQL_USER: root
+      MYSQL_PASSWORD: root
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: phpmyadmin
+    environment:
+      - PMA_ARBITRARY=1
+    restart: always
+    ports:
+      - 8080:80
+    volumes:
+      - /sessions
+
+  redis:
+    container_name: redis
+    image: redis:latest
+    build:
+          context: ./
+          dockerfile: /docker/redis/Dockerfile
+    ports:
+      - "6379:6379"
+    volumes:
+      - ./docker/redis/data:/data
+    entrypoint: redis-server --appendonly yes
+    restart: always
