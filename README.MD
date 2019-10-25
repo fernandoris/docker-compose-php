@@ -34,6 +34,7 @@ http://localhost:9000
 And you'll be able to access PhpMyAdmin in the url:
 ```
 http://localhost:8080
+SERVER : [YOUR_PROJECT_FOLDER]_mysql_1
 USER : root
 PASSWORD : root
 ```
