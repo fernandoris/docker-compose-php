@@ -16,11 +16,8 @@ services:
       - 3306
     volumes:
       - database_data:/var/lib/mysql
-    environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: database
-      MYSQL_USER: root
-      MYSQL_PASSWORD: root
+    env_file:
+      - ./mysql.env
 
   php:
     build:
@@ -43,12 +40,8 @@ services:
       - ./www:/var/www/html
     depends_on:
       - php
-
-    environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: database
-      MYSQL_USER: root
-      MYSQL_PASSWORD: root
+    env_file:
+      - ./mysql.env
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin:4.9
