@@ -1,13 +1,14 @@
 version: '3'
 
 volumes:
-    database_data:
-        driver: local
+  database_data:
+    driver: local
 
 services:
 
   mysql:
-    image: mysql:latest
+    image: mysql:8.0.18
+    command: ['mysqld','--character-set-server=utf8','--default-authentication-plugin=mysql_native_password']
     build:
       context: ./
       dockerfile: ./docker/mysql/Dockerfile
@@ -22,15 +23,15 @@ services:
       MYSQL_PASSWORD: root
 
   php:
-      build:
-        context: ./
-        dockerfile: ./docker/php/Dockerfile
-      depends_on:
-        - mysql
-      expose:
-        - 9000
-      volumes:
-        - ./www:/var/www/html
+    build:
+      context: ./
+      dockerfile: ./docker/php/Dockerfile
+    depends_on:
+      - mysql
+    expose:
+      - 9000
+    volumes:
+      - ./www:/var/www/html
 
   nginx:
     build:
@@ -50,8 +51,7 @@ services:
       MYSQL_PASSWORD: root
 
   phpmyadmin:
-    image: phpmyadmin/phpmyadmin
-    container_name: phpmyadmin
+    image: phpmyadmin/phpmyadmin:4.9
     environment:
       - PMA_ARBITRARY=1
     restart: always
@@ -61,11 +61,9 @@ services:
       - /sessions
 
   redis:
-    container_name: redis
-    image: redis:latest
     build:
-          context: ./
-          dockerfile: ./docker/redis/Dockerfile
+      context: ./
+      dockerfile: ./docker/redis/Dockerfile
     ports:
       - "6379:6379"
     volumes:
