@@ -14,7 +14,7 @@ It starts the following containers:
 Clone the repository
 
 ```git
-git clone https://github.com/fernandoris/docker-compose-php.git
+git clone https://github.com/fernandoris/docker-compose-php.git [YOUR_PROJECT_NAME]
 ```
 Accessing the repository folder
 ```bash
