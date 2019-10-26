@@ -7,9 +7,11 @@ It starts the following containers:
 - php 7.2
 - nginx 1.13
 - mysql 8.0.18
-- redispatch 4.0.8
+- redis 4.0.8
 
 ## Installation
+
+You must have previously installed docker and docker-compose. If you don't have it you can install it following this guide. --> [https://runnable.com/docker/getting-started/](https://runnable.com/docker/getting-started/)
 
 Clone the repository
 
